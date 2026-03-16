@@ -1,0 +1,48 @@
+{
+  "primary": {
+    "wyaparBlue": "#00D4FF",
+    "wyaparDark": "#0F0F23",
+    "wyaparCyan": "#00BCD4"
+  },
+  "secondary": {
+    "success": "#4CAF50",
+    "warning": "#FF9800",
+    "error": "#F44336",
+    "info": "#2196F3"
+  },
+  "neutral": {
+    "white": "#FFFFFF",
+    "lightGray": "#F5F5F5",
+    "gray": "#9E9E9E",
+    "darkGray": "#424242",
+    "black": "#000000"
+  },
+  "semantic": {
+    "success": "#4CAF50",
+    "warning": "#FF9800",
+    "error": "#F44336",
+    "info": "#2196F3"
+  },
+  "gradients": {
+    "primary": "linear-gradient(135deg, #00D4FF 0%, #00BCD4 100%)",
+    "dark": "linear-gradient(135deg, #0F0F23 0%, #1A1A2E 100%)"
+  },
+  "usage": {
+    "backgrounds": {
+      "primary": "#0F0F23",
+      "secondary": "#FFFFFF",
+      "accent": "#00D4FF"
+    },
+    "text": {
+      "onDark": "#FFFFFF",
+      "onLight": "#0F0F23",
+      "onAccent": "#0F0F23"
+    },
+    "buttons": {
+      "primary": "#00D4FF",
+      "primaryText": "#0F0F23",
+      "secondary": "transparent",
+      "secondaryText": "#00D4FF"
+    }
+  }
+}

@@ -1,0 +1,430 @@
+/**
+ * KWIKAPI Usage Examples
+ *
+ * This file shows how to integrate KWIKAPI into your RechargeService
+ * Copy these examples into your recharge.service.ts file
+ */
+
+import { Injectable, Logger, HttpException, HttpStatus } from '@nestjs/common';
+import { KwikApiService } from './kwikapi/kwikapi.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Transaction } from '../../entities/transaction.entity';
+import { Wallet } from '../../entities/wallet.entity';
+
+@Injectable()
+export class RechargeServiceExample {
+  private readonly logger = new Logger(RechargeServiceExample.name);
+
+  constructor(
+    private readonly kwikApiService: KwikApiService,
+    @InjectRepository(Transaction)
+    private transactionRepo: Repository<Transaction>,
+    @InjectRepository(Wallet)
+    private walletRepo: Repository<Wallet>,
+  ) {}
+
+  /**
+   * EXAMPLE 1: Process Mobile Recharge with KWIKAPI
+   */
+  async processMobileRecharge(userId: number, data: {
+    mobileNumber: string;
+    operator: string;
+    circle: string;
+    amount: number;
+  }) {
+    this.logger.log(`Processing recharge for user ${userId}`);
+
+    // 1. Validate user has sufficient balance
+    const wallet = await this.walletRepo.findOne({
+      where: { userId, type: 'PRIMARY', status: 'ACTIVE' },
+    });
+
+    if (!wallet) {
+      throw new HttpException('Wallet not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (wallet.availableBalance < data.amount) {
+      throw new HttpException('Insufficient balance', HttpStatus.BAD_REQUEST);
+    }
+
+    // 2. Create pending transaction record
+    const transaction = this.transactionRepo.create({
+      userId,
+      walletId: wallet.id,
+      type: 'RECHARGE',
+      category: 'MOBILE_RECHARGE',
+      amount: data.amount,
+      status: 'PENDING',
+      paymentMethod: 'WALLET',
+      metadata: {
+        mobile: data.mobileNumber,
+        operator: data.operator,
+        circle: data.circle,
+      },
+    });
+
+    await this.transactionRepo.save(transaction);
+
+    try {
+      // 3. Deduct amount from wallet (pessimistic lock to prevent race conditions)
+      await this.walletRepo
+        .createQueryBuilder()
+        .update(Wallet)
+        .set({
+          balance: () => `balance - ${data.amount}`,
+          lockedBalance: () => `lockedBalance + ${data.amount}`,
+        })
+        .where('id = :id', { id: wallet.id })
+        .execute();
+
+      // 4. Call KWIKAPI to process recharge
+      const kwikapiResponse = await this.kwikApiService.mobileRecharge({
+        mobile: data.mobileNumber,
+        operator: data.operator,
+        circle: data.circle,
+        amount: data.amount,
+        order_id: transaction.id.toString(),
+      });
+
+      // 5. Check KWIKAPI response
+      if (kwikapiResponse.status && kwikapiResponse.data) {
+        // Success! Update transaction
+        transaction.status = 'SUCCESS';
+        transaction.gatewayRef = kwikapiResponse.data.transaction_id;
+        transaction.gatewayResponse = kwikapiResponse;
+        transaction.completedAt = new Date();
+
+        // Release locked balance
+        await this.walletRepo
+          .createQueryBuilder()
+          .update(Wallet)
+          .set({
+            lockedBalance: () => `lockedBalance - ${data.amount}`,
+          })
+          .where('id = :id', { id: wallet.id })
+          .execute();
+
+        this.logger.log(`✅ Recharge successful: ${kwikapiResponse.data.transaction_id}`);
+      } else {
+        // KWIKAPI returned failure
+        throw new Error(kwikapiResponse.message || 'Recharge failed');
+      }
+
+      await this.transactionRepo.save(transaction);
+
+      return {
+        success: true,
+        transaction,
+        kwikapiTransactionId: kwikapiResponse.data?.transaction_id,
+        message: 'Recharge processed successfully',
+      };
+
+    } catch (error) {
+      this.logger.error('❌ Recharge failed:', error.message);
+
+      // Rollback: Refund amount to wallet
+      await this.walletRepo
+        .createQueryBuilder()
+        .update(Wallet)
+        .set({
+          balance: () => `balance + ${data.amount}`,
+          lockedBalance: () => `lockedBalance - ${data.amount}`,
+        })
+        .where('id = :id', { id: wallet.id })
+        .execute();
+
+      // Update transaction as failed
+      transaction.status = 'FAILED';
+      transaction.metadata = {
+        ...transaction.metadata,
+        error: error.message,
+        failedAt: new Date(),
+      };
+      await this.transactionRepo.save(transaction);
+
+      throw new HttpException(
+        error.message || 'Recharge failed. Amount has been refunded.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  /**
+   * EXAMPLE 2: Detect Operator from Mobile Number
+   */
+  async detectOperatorFromNumber(mobileNumber: string) {
+    try {
+      const response = await this.kwikApiService.detectOperator({
+        mobile: mobileNumber,
+      });
+
+      if (response.status && response.data) {
+        return {
+          mobile: response.data.mobile,
+          operator: response.data.operator,
+          operatorName: response.data.operator_name,
+          circle: response.data.circle,
+          circleName: response.data.circle_name,
+        };
+      }
+
+      throw new Error('Could not detect operator');
+    } catch (error) {
+      this.logger.error('Operator detection failed:', error.message);
+      throw new HttpException(
+        'Could not detect operator for this number',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  /**
+   * EXAMPLE 3: Get Recharge Plans
+   */
+  async getRechargePlans(operator: string, circle: string, category?: string) {
+    try {
+      const response = await this.kwikApiService.getPlans({
+        operator,
+        circle,
+        category,
+      });
+
+      if (response.status && response.data) {
+        // Transform KWIKAPI plans to your format
+        return response.data.plans.map(plan => ({
+          id: plan.id,
+          operator: plan.operator,
+          circle: plan.circle,
+          amount: plan.amount,
+          validity: plan.validity,
+          description: plan.description,
+          category: plan.category,
+          details: {
+            data: plan.data,
+            voice: plan.voice,
+            sms: plan.sms,
+          },
+          isPopular: plan.is_popular || false,
+        }));
+      }
+
+      return [];
+    } catch (error) {
+      this.logger.error('Failed to fetch plans:', error.message);
+      // Return empty array instead of throwing
+      // This allows frontend to show "No plans available"
+      return [];
+    }
+  }
+
+  /**
+   * EXAMPLE 4: Check Transaction Status
+   */
+  async checkRechargeStatus(orderId: string) {
+    try {
+      // Find local transaction
+      const transaction = await this.transactionRepo.findOne({
+        where: { id: parseInt(orderId) },
+      });
+
+      if (!transaction) {
+        throw new HttpException('Transaction not found', HttpStatus.NOT_FOUND);
+      }
+
+      // Check status from KWIKAPI
+      const response = await this.kwikApiService.checkTransactionStatus({
+        order_id: orderId,
+      });
+
+      if (response.status && response.data) {
+        // Update local transaction status
+        const statusMap = {
+          'PENDING': 'PROCESSING',
+          'SUCCESS': 'SUCCESS',
+          'FAILED': 'FAILED',
+          'REFUNDED': 'REFUNDED',
+        };
+
+        transaction.status = statusMap[response.data.status] || 'PENDING';
+        transaction.gatewayResponse = response;
+
+        if (response.data.processed_at) {
+          transaction.processedAt = new Date(response.data.processed_at);
+        }
+
+        await this.transactionRepo.save(transaction);
+
+        return {
+          orderId: transaction.id,
+          status: transaction.status,
+          amount: transaction.amount,
+          kwikapiStatus: response.data.status,
+          kwikapiTransactionId: response.data.transaction_id,
+          operatorRef: response.data.operator_ref,
+          processedAt: response.data.processed_at,
+        };
+      }
+
+      throw new Error('Could not fetch status');
+    } catch (error) {
+      this.logger.error('Status check failed:', error.message);
+      throw new HttpException(
+        'Could not check transaction status',
+        HttpStatus.SERVICE_UNAVAILABLE,
+      );
+    }
+  }
+
+  /**
+   * EXAMPLE 5: Get Available Operators
+   */
+  async getOperators() {
+    try {
+      const response = await this.kwikApiService.getOperators();
+
+      if (response.status && response.data) {
+        return response.data.operators.filter(op => op.is_active);
+      }
+
+      return [];
+    } catch (error) {
+      this.logger.error('Failed to fetch operators:', error.message);
+      return [];
+    }
+  }
+
+  /**
+   * EXAMPLE 6: Get Available Circles
+   */
+  async getCircles() {
+    try {
+      const response = await this.kwikApiService.getCircles();
+
+      if (response.status && response.data) {
+        return response.data.circles;
+      }
+
+      return [];
+    } catch (error) {
+      this.logger.error('Failed to fetch circles:', error.message);
+      return [];
+    }
+  }
+
+  /**
+   * EXAMPLE 7: Check KWIKAPI Account Balance
+   */
+  async checkKwikApiBalance() {
+    try {
+      const response = await this.kwikApiService.getBalance();
+
+      if (response.status && response.data) {
+        this.logger.log(
+          `💰 KWIKAPI Balance: ${response.data.currency} ${response.data.balance}`,
+        );
+
+        // Alert if balance is low
+        if (response.data.balance < 1000) {
+          this.logger.warn('⚠️  KWIKAPI balance is low! Please recharge.');
+        }
+
+        return {
+          balance: response.data.balance,
+          currency: response.data.currency,
+          lastUpdated: response.data.last_updated,
+        };
+      }
+
+      throw new Error('Could not fetch balance');
+    } catch (error) {
+      this.logger.error('Balance check failed:', error.message);
+      return null;
+    }
+  }
+
+  /**
+   * EXAMPLE 8: Complete Recharge Flow (Entry Point)
+   */
+  async rechargeWithAutoDetection(userId: number, data: {
+    mobileNumber: string;
+    amount: number;
+  }) {
+    // Step 1: Auto-detect operator
+    this.logger.log('Step 1: Detecting operator...');
+    const detection = await this.detectOperatorFromNumber(data.mobileNumber);
+
+    // Step 2: Process recharge
+    this.logger.log('Step 2: Processing recharge...');
+    const result = await this.processMobileRecharge(userId, {
+      mobileNumber: data.mobileNumber,
+      operator: detection.operator,
+      circle: detection.circle,
+      amount: data.amount,
+    });
+
+    return {
+      ...result,
+      operatorDetails: detection,
+    };
+  }
+}
+
+/**
+ * EXAMPLE CONTROLLER USAGE
+ */
+/*
+
+import { Controller, Post, Get, Body, Param, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
+
+@Controller('api/v1/recharge')
+@UseGuards(JwtAuthGuard)
+export class RechargeController {
+  constructor(private rechargeService: RechargeService) {}
+
+  @Post('detect-operator')
+  async detectOperator(@Body() body: { mobileNumber: string }) {
+    return this.rechargeService.detectOperatorFromNumber(body.mobileNumber);
+  }
+
+  @Get('plans')
+  async getPlans(@Query() query: { operator: string; circle: string; category?: string }) {
+    return this.rechargeService.getRechargePlans(
+      query.operator,
+      query.circle,
+      query.category,
+    );
+  }
+
+  @Post('mobile')
+  async mobileRecharge(
+    @CurrentUser() user: any,
+    @Body() body: { mobileNumber: string; amount: number },
+  ) {
+    return this.rechargeService.rechargeWithAutoDetection(user.userId, body);
+  }
+
+  @Get('status/:orderId')
+  async checkStatus(@Param('orderId') orderId: string) {
+    return this.rechargeService.checkRechargeStatus(orderId);
+  }
+
+  @Get('operators')
+  async getOperators() {
+    return this.rechargeService.getOperators();
+  }
+
+  @Get('circles')
+  async getCircles() {
+    return this.rechargeService.getCircles();
+  }
+
+  @Get('balance')
+  async getBalance() {
+    return this.rechargeService.checkKwikApiBalance();
+  }
+}
+
+*/

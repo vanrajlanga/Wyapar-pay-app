@@ -1,0 +1,12 @@
+{
+  "workflow": "login_success",
+  "category": "account",
+  "priority": "low",
+  "languages": {
+    "en": "Dear User, Welcome back to WyaparPay! You have successfully logged in. Continue using services securely and effortlessly.",
+    "hi": "प्रिय उपयोगकर्ता, WyaparPay में वापसी पर स्वागत है! आप सफलतापूर्वक लॉग इन हो गए हैं। सेवाओं का उपयोग सुरक्षित रूप से और आसानी से जारी रखें।",
+    "kn": "ಪ್ರಿಯ ಬಳಕೆದಾರರೇ, WyaparPay ಗೆ ಮರಳಿ ಸ್ವಾಗತ! ನೀವು ಯಶಸ್ವಿಯಾಗಿ ಲಾಗ್ ಇನ್ ಆಗಿದ್ದೀರಿ. ಸೇವೆಗಳನ್ನು ಸುರಕ್ಷಿತವಾಗಿ ಮತ್ತು ಸುಲಭವಾಗಿ ಮುಂದುವರಿಸಿ."
+  },
+  "variables": []
+}
+

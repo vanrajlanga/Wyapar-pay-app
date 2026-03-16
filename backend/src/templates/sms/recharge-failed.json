@@ -1,0 +1,12 @@
+{
+  "workflow": "recharge_failed",
+  "category": "transaction",
+  "priority": "high",
+  "languages": {
+    "en": "Recharge failed. Amount ₹{{amount}} refunded to wallet. Txn ID: {{transactionId}}. Contact support if needed.",
+    "hi": "रिचार्ज विफल। राशि ₹{{amount}} वॉलेट में वापस। लेन-देन ID: {{transactionId}}। आवश्यकता पड़ने पर सहायता से संपर्क करें।",
+    "kn": "ರೀಚಾರ್ಜ್ ವಿಫಲ. ಮೊತ್ತ ₹{{amount}} ವಾಲೆಟ್ಗೆ ಮರಳಿ ನೀಡಲಾಗಿದೆ. ಟ್ರಾನ್ಸ್ ಐಡಿ: {{transactionId}}. ಅಗತ್ಯವಿದ್ದರೆ ಬೆಂಬಲವನ್ನು ಸಂಪರ್ಕಿಸಿ."
+  },
+  "variables": ["amount", "transactionId"]
+}
+

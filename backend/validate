@@ -1,0 +1,114 @@
+#!/bin/bash
+
+# 🔍 WyaparPay Configuration Validation Script
+# This script ensures the CRM-backend approach is properly configured
+
+echo "🔍 Validating WyaparPay Configuration..."
+echo "========================================"
+
+# Check if we're in the backend directory
+if [ ! -f "package.json" ]; then
+    echo "❌ Please run this script from the backend directory"
+    exit 1
+fi
+
+# 1. Check database config for synchronize: false
+echo "1. Checking TypeORM configuration..."
+if grep -q "synchronize: false" src/config/database.config.ts; then
+    echo "   ✅ TypeORM synchronization is disabled"
+else
+    echo "   ❌ TypeORM synchronization should be disabled!"
+    echo "   Fix: Set synchronize: false in src/config/database.config.ts"
+fi
+
+# 2. Check .env file doesn't have DB_SYNCHRONIZE
+echo "2. Checking .env configuration..."
+if [ -f ".env" ]; then
+    if grep -q "^DB_SYNCHRONIZE" .env; then
+        echo "   ❌ DB_SYNCHRONIZE found in .env - this should be removed!"
+        echo "   Fix: Remove DB_SYNCHRONIZE from .env file"
+    else
+        echo "   ✅ No DB_SYNCHRONIZE in .env (correct)"
+    fi
+else
+    echo "   ⚠️  .env file not found - create it from env.example"
+fi
+
+# 3. Check env.example doesn't have DB_SYNCHRONIZE
+echo "3. Checking env.example configuration..."
+if grep -q "^DB_SYNCHRONIZE" env.example; then
+    echo "   ❌ DB_SYNCHRONIZE found in env.example - this should be removed!"
+    echo "   Fix: Remove DB_SYNCHRONIZE from env.example"
+else
+    echo "   ✅ No DB_SYNCHRONIZE in env.example (correct)"
+fi
+
+# 4. Check setup-database.sh exists
+echo "4. Checking database setup script..."
+if [ -f "setup-database.sh" ]; then
+    echo "   ✅ setup-database.sh exists"
+    if [ -x "setup-database.sh" ]; then
+        echo "   ✅ setup-database.sh is executable"
+    else
+        echo "   ⚠️  setup-database.sh is not executable"
+        echo "   Fix: chmod +x setup-database.sh"
+    fi
+else
+    echo "   ❌ setup-database.sh not found!"
+    echo "   Fix: Create setup-database.sh for database management"
+fi
+
+# 5. Check SQL schema file exists
+echo "5. Checking SQL schema file..."
+if [ -f "../docs/database/COMPLETE_DATABASE_SCHEMA.sql" ]; then
+    echo "   ✅ COMPLETE_DATABASE_SCHEMA.sql exists"
+else
+    echo "   ❌ COMPLETE_DATABASE_SCHEMA.sql not found!"
+    echo "   Fix: Create docs/database/COMPLETE_DATABASE_SCHEMA.sql"
+fi
+
+# 6. Check package.json database scripts
+echo "6. Checking npm database scripts..."
+if grep -q "db:setup" package.json; then
+    echo "   ✅ Database management scripts found in package.json"
+else
+    echo "   ❌ Database management scripts missing from package.json"
+    echo "   Fix: Add db:setup, db:schema, db:seed, db:verify scripts"
+fi
+
+# 7. Check if MySQL is running
+echo "7. Checking MySQL connection..."
+if mysql -u root -e "SELECT 1;" > /dev/null 2>&1; then
+    echo "   ✅ MySQL is running and accessible"
+    
+    # Check if database exists
+    if mysql -u root -e "USE wyapar_pay; SELECT 1;" > /dev/null 2>&1; then
+        echo "   ✅ wyapar_pay database exists"
+        
+        # Check if tables exist
+        TABLE_COUNT=$(mysql -u root -e "USE wyapar_pay; SHOW TABLES;" 2>/dev/null | wc -l)
+        if [ "$TABLE_COUNT" -ge 13 ]; then
+            echo "   ✅ Database has $((TABLE_COUNT-1)) tables (expected 13)"
+        else
+            echo "   ⚠️  Database has only $((TABLE_COUNT-1)) tables (expected 13)"
+            echo "   Fix: Run ./setup-database.sh to create all tables"
+        fi
+    else
+        echo "   ⚠️  wyapar_pay database doesn't exist"
+        echo "   Fix: Run ./setup-database.sh to create database"
+    fi
+else
+    echo "   ❌ MySQL is not running or not accessible"
+    echo "   Fix: Start MySQL with 'brew services start mysql'"
+fi
+
+echo ""
+echo "========================================"
+echo "🎯 WyaparPay Validation Complete!"
+echo ""
+echo "📋 Summary:"
+echo "✅ = Correctly configured"
+echo "⚠️  = Warning (may need attention)"
+echo "❌ = Error (must be fixed)"
+echo ""
+echo "For help, see: docs/database/README.md"

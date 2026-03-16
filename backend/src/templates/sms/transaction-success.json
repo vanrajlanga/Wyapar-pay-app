@@ -1,0 +1,12 @@
+{
+  "workflow": "transaction_success",
+  "category": "transaction",
+  "priority": "normal",
+  "languages": {
+    "en": "Payment of {{currency}}{{amount}} successful. Txn ID: {{transactionId}}. Thank you for using WyaparPay!",
+    "hi": "{{currency}}{{amount}} का भुगतान सफल। लेन-देन ID: {{transactionId}}। WyaparPay का उपयोग करने के लिए धन्यवाद!",
+    "kn": "{{currency}}{{amount}} ಪಾವತಿ ಯಶಸ್ವಿ. ಟ್ರಾನ್ಸ್ ಐಡಿ: {{transactionId}}. WyaparPay ಬಳಸಿದ್ದಕ್ಕೆ ಧನ್ಯವಾದಗಳು!"
+  },
+  "variables": ["currency", "amount", "transactionId"]
+}
+

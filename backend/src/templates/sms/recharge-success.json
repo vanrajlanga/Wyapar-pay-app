@@ -1,0 +1,12 @@
+{
+  "workflow": "recharge_success",
+  "category": "transaction",
+  "priority": "high",
+  "languages": {
+    "en": "Dear User, Your recharge of ₹{{amount}} is successful. Transaction ID: {{transactionId}}. Enjoy seamless payments with WyapaarPay!",
+    "hi": "प्रिय उपयोगकर्ता, आपका रिचार्ज ₹{{amount}} सफल है। लेन-देन ID: {{transactionId}}. WyapaarPay के साथ निर्बाध भुगतान का आनंद लें!",
+    "kn": "ಪ್ರಿಯ ಬಳಕೆದಾರರೇ, ನಿಮ್ಮ ರೀಚಾರ್ಜ್ ₹{{amount}} ಯಶಸ್ವಿ. ವಹಿವಾಟು ಐಡಿ: {{transactionId}}. WyapaarPay ನೊಂದಿಗೆ ನಿರ್ವಿಘ್ನ ಪಾವತಿಗಳನ್ನು ಆನಂದಿಸಿ!"
+  },
+  "variables": ["amount", "transactionId"]
+}
+

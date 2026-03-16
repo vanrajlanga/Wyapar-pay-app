@@ -1,0 +1,12 @@
+{
+  "workflow": "otp_sent",
+  "category": "security",
+  "priority": "high",
+  "languages": {
+    "en": "Dear User, Your OTP for WyapaarPay login is {{otp}}. Use this code to access your account. Do not share it with anyone.",
+    "hi": "प्रिय उपयोगकर्ता, आपके WyapaarPay लॉगिन के लिए OTP {{otp}} है। अपने खाते में पहुंचने के लिए इस कोड का उपयोग करें। इसे किसी के साथ साझा न करें।",
+    "kn": "ಪ್ರಿಯ ಬಳಕೆದಾರರೇ, ನಿಮ್ಮ WyapaarPay ಲಾಗಿನ್‌ಗಾಗಿ OTP {{otp}}. ನಿಮ್ಮ ಖಾತೆಯನ್ನು ಪ್ರವೇಶಿಸಲು ಈ ಕೋಡ್ ಅನ್ನು ಬಳಸಿ. ಇದನ್ನು ಯಾರೊಂದಿಗೂ ಹಂಚಿಕೊಳ್ಳಬೇಡಿ."
+  },
+  "variables": ["otp"]
+}
+

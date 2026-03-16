@@ -1,0 +1,12 @@
+{
+  "workflow": "welcome_message",
+  "category": "promotional",
+  "priority": "normal",
+  "languages": {
+    "en": "Dear User, Welcome to WyaparPay! Your account has been created successfully. Start using services with ease.",
+    "hi": "प्रिय उपयोगकर्ता, WyaparPay में आपका स्वागत है! आपका खाता सफलतापूर्वक बनाया गया है। सेवाओं का उपयोग आसानी से शुरू करें।",
+    "kn": "ಪ್ರಿಯ ಬಳಕೆದಾರರೇ, WyaparPay ಗೆ ಸ್ವಾಗತ! ನಿಮ್ಮ ಖಾತೆಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ರಚಿಸಲಾಗಿದೆ. ಸೇವೆಗಳನ್ನು ಸುಲಭವಾಗಿ ಬಳಸಲು ಪ್ರಾರಂಭಿಸಿ."
+  },
+  "variables": []
+}
+

@@ -1,0 +1,75 @@
+{
+  "expo": {
+    "name": "WyaparPayExpo",
+    "slug": "WyaparPayExpo",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.wyaparpay.app",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "WyaparPay uses Face ID to securely authenticate and provide quick access to your account.",
+        "NSPhotoLibraryUsageDescription": "WyaparPay needs access to your photo library to let you choose a profile picture.",
+        "NSCameraUsageDescription": "WyaparPay needs access to your camera to let you take a profile picture.",
+        "UIBackgroundModes": [
+          "remote-notification",
+          "remote-notification"
+        ],
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "entitlements": {
+        "aps-environment": "production"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "allowBackup": false,
+      "usesCleartextTraffic": false,
+      "versionCode": 1,
+      "permissions": [
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.VIBRATE",
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.READ_MEDIA_IMAGES"
+      ],
+      "package": "com.wyaparpay.app"
+    },
+    "notification": {
+      "color": "#00D4FF",
+      "iosDisplayInForeground": true,
+      "androidMode": "default",
+      "androidCollapsedTitle": "WyaparPay"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "privacy": "public",
+    "extra": {
+      "eas": {
+        "projectId": "65cf0a64-e844-4120-92fe-c5f6a23fd5a4"
+      },
+      "aws": {
+        "region": "us-east-1",
+        "accessKeyId": "YOUR_AWS_ACCESS_KEY",
+        "secretAccessKey": "YOUR_AWS_SECRET_KEY",
+        "s3BucketName": "wyaparpay-assets",
+        "s3ProfileFolder": "profile-images"
+      }
+    },
+    "owner": "sevend.expo"
+  }
+}

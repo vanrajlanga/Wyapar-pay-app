@@ -1,0 +1,15 @@
+# PM2 ignore file
+# Files and directories to ignore when PM2 watches for changes
+
+node_modules/
+dist/
+logs/
+*.log
+.env
+.env.*
+.git/
+.DS_Store
+coverage/
+*.test.js
+*.spec.js
+

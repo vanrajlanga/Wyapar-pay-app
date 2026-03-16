@@ -1,0 +1,12 @@
+{
+  "workflow": "transaction_failed",
+  "category": "transaction",
+  "priority": "high",
+  "languages": {
+    "en": "Transaction failed. Please try again or contact support. Txn ID: {{transactionId}}.",
+    "hi": "लेन-देन विफल। कृपया पुनः प्रयास करें या सहायता से संपर्क करें। लेन-देन ID: {{transactionId}}।",
+    "kn": "ವಹಿವಾಟು ವಿಫಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ ಅಥವಾ ಬೆಂಬಲವನ್ನು ಸಂಪರ್ಕಿಸಿ. ಟ್ರಾನ್ಸ್ ಐಡಿ: {{transactionId}}."
+  },
+  "variables": ["transactionId"]
+}
+

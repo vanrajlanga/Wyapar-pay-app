@@ -1,0 +1,12 @@
+{
+  "workflow": "account_verified",
+  "category": "account",
+  "priority": "high",
+  "languages": {
+    "en": "Your WyaparPay account has been verified! You can now make payments and recharges. Welcome aboard!",
+    "hi": "आपका WyaparPay खाता सत्यापित किया गया है! अब आप भुगतान और रिचार्ज कर सकते हैं। स्वागत है!",
+    "kn": "ನಿಮ್ಮ WyaparPay ಖಾತೆ ಪರಿಶೀಲಿಸಲಾಗಿದೆ! ಈಗ ನೀವು ಪಾವತಿಗಳು ಮತ್ತು ರೀಚಾರ್ಜ್ ಮಾಡಬಹುದು. ಸ್ವಾಗತ!"
+  },
+  "variables": []
+}
+

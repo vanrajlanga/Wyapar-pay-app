@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP for WyaparPay Login</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00D4FF;
+            margin-bottom: 10px;
+        }
+        .title {
+            font-size: 24px;
+            color: #0F0F23;
+            margin-bottom: 20px;
+        }
+        .otp-code {
+            background: linear-gradient(135deg, #00D4FF, #0099CC);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 8px;
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+            margin: 30px 0;
+            letter-spacing: 5px;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">WyaparPay</div>
+            <h1 class="title">🔐 Your Login OTP</h1>
+        </div>
+        
+        <div class="content">
+            <p>Hello <strong>{{userName}}</strong>,</p>
+            
+            <p>You requested an OTP to login to your WyaparPay account. Use the code below to complete your login:</p>
+            
+            <div class="otp-code">
+                {{otp}}
+            </div>
+            
+            <div class="warning">
+                <strong>⚠️ Important Security Information:</strong>
+                <ul>
+                    <li>This OTP is valid for <strong>10 minutes</strong> only</li>
+                    <li>Do NOT share this code with anyone</li>
+                    <li>WyaparPay will never ask for your OTP via phone or email</li>
+                    <li>If you didn't request this OTP, please ignore this email</li>
+                </ul>
+            </div>
+            
+            <p><strong>Request Details:</strong></p>
+            <ul>
+                <li>📧 Email: {{userEmail}}</li>
+                <li>🕐 Time: {{requestTime}}</li>
+                <li>🌐 IP Address: {{ipAddress}}</li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Need help?</strong></p>
+            <p>Contact us at <a href="mailto:support@wyaparpay.com">support@wyaparpay.com</a></p>
+            
+            <p>This OTP was requested for <strong>{{userEmail}}</strong></p>
+            <p>WyaparPay - Your Smart Financial Partner</p>
+            <p style="font-size: 12px; color: #999;">
+                © 2024 WyaparPay. All rights reserved.<br>
+                This is an automated security message, please do not reply to this email.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

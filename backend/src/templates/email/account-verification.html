@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your WyaparPay Account</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00D4FF;
+            margin-bottom: 10px;
+        }
+        .title {
+            font-size: 24px;
+            color: #0F0F23;
+            margin-bottom: 20px;
+        }
+        .content {
+            margin-bottom: 30px;
+        }
+        .verification-code {
+            background: linear-gradient(135deg, #00D4FF, #0099CC);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            letter-spacing: 3px;
+        }
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #00D4FF, #0099CC);
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 14px;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .social-links {
+            margin: 20px 0;
+        }
+        .social-links a {
+            color: #00D4FF;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">WyaparPay</div>
+            <h1 class="title">Verify Your Account</h1>
+        </div>
+        
+        <div class="content">
+            <p>Hello <strong>{{userName}}</strong>,</p>
+            
+            <p>Welcome to WyaparPay! We're excited to have you join our community of smart financial management.</p>
+            
+            <p>To complete your account setup and ensure the security of your account, please verify your email address using the verification code below:</p>
+            
+            <div class="verification-code">
+                {{verificationCode}}
+            </div>
+            
+            <p>Alternatively, you can click the button below to verify your account directly:</p>
+            
+            <div style="text-align: center;">
+                <a href="{{verificationLink}}" class="button">Verify My Account</a>
+            </div>
+            
+            <div class="warning">
+                <strong>⚠️ Important:</strong>
+                <ul>
+                    <li>This verification code will expire in <strong>24 hours</strong></li>
+                    <li>For security reasons, don't share this code with anyone</li>
+                    <li>If you didn't create a WyaparPay account, please ignore this email</li>
+                </ul>
+            </div>
+            
+            <p>Once verified, you'll be able to:</p>
+            <ul>
+                <li>✅ Access your secure wallet</li>
+                <li>✅ Make payments and transfers</li>
+                <li>✅ Pay bills and recharge services</li>
+                <li>✅ Track your transaction history</li>
+                <li>✅ Set up preferences and security settings</li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Need help?</strong></p>
+            <div class="social-links">
+                <a href="mailto:support@wyaparpay.com">📧 Email Support</a> |
+                <a href="tel:+919876543210">📞 Call Us</a> |
+                <a href="https://wa.me/919876543210">💬 WhatsApp</a>
+            </div>
+            
+            <p>This email was sent to <strong>{{userEmail}}</strong></p>
+            <p>WyaparPay - Your Smart Financial Partner</p>
+            <p style="font-size: 12px; color: #999;">
+                © 2024 WyaparPay. All rights reserved.<br>
+                This is an automated message, please do not reply to this email.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

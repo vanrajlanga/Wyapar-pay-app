@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recharge Successful - WyaparPay</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00D4FF;
+            margin-bottom: 10px;
+        }
+        .success-banner {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .transaction-box {
+            background: #f5f5f5;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #4CAF50;
+        }
+        .amount {
+            font-size: 36px;
+            font-weight: bold;
+            color: #4CAF50;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">WyaparPay</div>
+            <h1 class="title">📱 Recharge Successful!</h1>
+        </div>
+        
+        <div class="success-banner">
+            <h2 style="margin: 0;">Your Recharge is Complete</h2>
+            <p style="margin: 10px 0 0 0;">Enjoy seamless payments with WyaparPay!</p>
+        </div>
+        
+        <div class="content">
+            <p>Hello <strong>{{userName}}</strong>,</p>
+            
+            <p>Your mobile recharge has been processed successfully. Here are the details:</p>
+            
+            <div class="transaction-box">
+                <div class="amount">₹{{amount}}</div>
+                <p style="text-align: center; margin: 10px 0;"><strong>Recharge Amount</strong></p>
+                
+                <div style="margin-top: 20px;">
+                    <p><strong>📱 Mobile Number:</strong> {{mobileNumber}}</p>
+                    <p><strong>🆔 Transaction ID:</strong> {{transactionId}}</p>
+                    <p><strong>🕐 Transaction Time:</strong> {{transactionTime}}</p>
+                    <p><strong>✅ Status:</strong> <span style="color: #4CAF50;">Success</span></p>
+                </div>
+            </div>
+            
+            <p>Your mobile number has been recharged successfully. The amount will be credited to your account shortly.</p>
+            
+            <h3>💡 What's Next?</h3>
+            <ul>
+                <li>✅ Check your mobile balance</li>
+                <li>📊 View transaction history in the app</li>
+                <li>💰 Recharge again anytime</li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Need help?</strong></p>
+            <p>Contact us at <a href="mailto:support@wyaparpay.com">support@wyaparpay.com</a></p>
+            
+            <p>Transaction receipt sent to <strong>{{userEmail}}</strong></p>
+            <p>WyaparPay - Your Smart Financial Partner</p>
+            <p style="font-size: 12px; color: #999;">
+                © 2024 WyaparPay. All rights reserved.<br>
+                This is an automated transaction notification, please do not reply to this email.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

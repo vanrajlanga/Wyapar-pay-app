@@ -1,0 +1,12 @@
+{
+  "workflow": "login_alert",
+  "category": "security",
+  "priority": "high",
+  "languages": {
+    "en": "ALERT: New login to your WyaparPay account from {{loginLocation}} ({{loginDevice}}). If this wasn't you, change password immediately.",
+    "hi": "अलर्ट: आपके WyaparPay खाते में {{loginLocation}} ({{loginDevice}}) से नया लॉगिन। यदि यह आप नहीं थे, तो पासवर्ड तुरंत बदलें।",
+    "kn": "ಎಚ್ಚರಿಕೆ: ನಿಮ್ಮ WyaparPay ಖಾತೆಗೆ {{loginLocation}} ({{loginDevice}}) ನಿಂದ ಹೊಸ ಲಾಗಿನ್. ಇದು ನೀವಲ್ಲದಿದ್ದರೆ, ಪಾಸ್ವರ್ಡ್ ತಕ್ಷಣ ಬದಲಾಯಿಸಿ."
+  },
+  "variables": ["loginLocation", "loginDevice"]
+}
+

@@ -1,0 +1,50 @@
+# Assets Directory .gitignore
+
+# Large image files (keep optimized versions)
+*.psd
+*.ai
+*.sketch
+*.fig
+
+# Raw image files
+*.raw
+*.cr2
+*.nef
+*.dng
+
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Font files (if using licensed fonts)
+# Uncomment if you have licensed fonts that shouldn't be in repo
+# *.otf
+# *.ttf
+# *.woff
+# *.woff2
+
+# Large video files
+*.mov
+*.mp4
+*.avi
+*.mkv
+
+# Archive files
+*.zip
+*.rar
+*.7z
+*.tar.gz
+
+# Backup files
+*.bak
+*.backup

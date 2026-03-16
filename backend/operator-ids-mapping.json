@@ -1,0 +1,30 @@
+[
+  {
+    "operator_name": "Airtel",
+    "operator_id": "1",
+    "service_type": "Prepaid",
+    "status": "1",
+    "biller_status": "on",
+    "bill_fetch": "NO",
+    "supportValidation": "NOT_SUPPORTED",
+    "bbps_enabled": "NO",
+    "message": "NA",
+    "description": "",
+    "amount_minimum": "10",
+    "amount_maximum": "10000"
+  },
+  {
+    "operator_name": "MTNL",
+    "operator_id": "14",
+    "service_type": "Prepaid",
+    "status": "0",
+    "biller_status": "off",
+    "bill_fetch": "NO",
+    "supportValidation": "NOT_SUPPORTED",
+    "bbps_enabled": "NO",
+    "message": "NA",
+    "description": "",
+    "amount_minimum": "10",
+    "amount_maximum": "10000"
+  }
+]
